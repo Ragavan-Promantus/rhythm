@@ -23,7 +23,8 @@ class RegisterTopBar extends StatelessWidget {
                 size: 20,
               ),
               splashRadius: 22,
-              padding: EdgeInsets.zero,
+              padding: const EdgeInsets.only(right: 28),
+              constraints: const BoxConstraints(),
             ),
           ),
           const Text(
