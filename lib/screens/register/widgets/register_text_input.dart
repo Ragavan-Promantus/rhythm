@@ -1,0 +1,81 @@
+import 'package:flutter/material.dart';
+
+class RegisterTextInput extends StatelessWidget {
+  const RegisterTextInput({
+    required this.controller,
+    required this.hintText,
+    required this.prefixIcon,
+    this.validator,
+    this.keyboardType,
+    this.textInputAction,
+    this.obscureText = false,
+    this.onFieldSubmitted,
+    this.suffix,
+    super.key,
+  });
+
+  final TextEditingController controller;
+  final String hintText;
+  final IconData prefixIcon;
+  final String? Function(String?)? validator;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final bool obscureText;
+  final void Function(String)? onFieldSubmitted;
+  final Widget? suffix;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      validator: validator,
+      keyboardType: keyboardType,
+      textInputAction: textInputAction,
+      obscureText: obscureText,
+      onFieldSubmitted: onFieldSubmitted,
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 17,
+        fontWeight: FontWeight.w500,
+      ),
+      cursorColor: Colors.white,
+      decoration: InputDecoration(
+        hintText: hintText,
+        hintStyle: const TextStyle(
+          color: Color(0xFF72809D),
+          fontSize: 17,
+          fontWeight: FontWeight.w500,
+        ),
+        prefixIcon: Icon(prefixIcon, color: const Color(0xFFAAB1C4), size: 25),
+        suffixIcon: suffix,
+        filled: true,
+        fillColor: const Color(0xFF1A1028),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 18,
+          vertical: 24,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(999),
+          borderSide: const BorderSide(color: Color(0xFF3B1280), width: 1.2),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(999),
+          borderSide: const BorderSide(color: Color(0xFF7F2CFF), width: 1.4),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(999),
+          borderSide: const BorderSide(color: Color(0xFFE86A7A), width: 1.2),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(999),
+          borderSide: const BorderSide(color: Color(0xFFE86A7A), width: 1.4),
+        ),
+        errorStyle: const TextStyle(
+          color: Color(0xFFFF98A4),
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+}

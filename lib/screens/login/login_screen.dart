@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../register/register_screen.dart';
 import 'widgets/brand_header.dart';
 import 'widgets/divider_label.dart';
 import 'widgets/field_heading.dart';
@@ -195,9 +196,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 40),
                       Center(
                         child: TextButton(
-                          onPressed: () => _showMessage(
-                            'Sign up flow is ready for the next screen.',
-                          ),
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) => const RegisterScreen(),
+                              ),
+                            );
+                          },
                           child: const Text.rich(
                             TextSpan(
                               text: "Don't have an account? ",

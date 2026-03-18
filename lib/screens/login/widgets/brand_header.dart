@@ -34,7 +34,7 @@ class BrandHeader extends StatelessWidget {
         ),
         const SizedBox(height: 26),
         const Text(
-          'EchoStream',
+          'Rhythm',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,
