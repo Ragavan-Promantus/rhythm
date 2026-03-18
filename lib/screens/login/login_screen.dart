@@ -100,6 +100,24 @@ class _LoginScreenState extends State<LoginScreen> {
     return null;
   }
 
+  Route<void> _buildRegisterRoute() {
+    return PageRouteBuilder<void>(
+      pageBuilder: (_, animation, secondaryAnimation) => const RegisterScreen(),
+      transitionDuration: const Duration(milliseconds: 320),
+      reverseTransitionDuration: const Duration(milliseconds: 320),
+      transitionsBuilder: (_, animation, secondaryAnimation, child) {
+        final offsetAnimation = Tween<Offset>(
+          begin: const Offset(1, 0),
+          end: Offset.zero,
+        ).animate(
+          CurvedAnimation(parent: animation, curve: Curves.easeOutCubic),
+        );
+
+        return SlideTransition(position: offsetAnimation, child: child);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -197,11 +215,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Center(
                         child: TextButton(
                           onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (_) => const RegisterScreen(),
-                              ),
-                            );
+                            Navigator.of(context).push(_buildRegisterRoute());
                           },
                           child: const Text.rich(
                             TextSpan(

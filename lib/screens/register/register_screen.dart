@@ -124,6 +124,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
+  void _goBackToLogin() {
+    Navigator.of(context).maybePop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,7 +152,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       RegisterTopBar(
-                        onBackPressed: () => Navigator.of(context).maybePop(),
+                        onBackPressed: _goBackToLogin,
                       ),
                       const SizedBox(height: 44),
                       const RegisterIntro(),
@@ -242,7 +246,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 34),
                       Center(
                         child: TextButton(
-                          onPressed: () => Navigator.of(context).maybePop(),
+                          onPressed: _goBackToLogin,
                           child: const Text.rich(
                             TextSpan(
                               text: 'Already have an account? ',
