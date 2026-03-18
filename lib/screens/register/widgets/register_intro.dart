@@ -9,7 +9,7 @@ class RegisterIntro extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Join the rhythm',
+          'Join the Rhythm',
           style: TextStyle(
             color: Colors.white,
             fontSize: 38,
