@@ -15,7 +15,7 @@ class RegisterPrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 66,
+      height: 50,
       child: DecoratedBox(
         decoration: const BoxDecoration(
           boxShadow: [
@@ -34,7 +34,7 @@ class RegisterPrimaryButton extends StatelessWidget {
             shadowColor: Colors.transparent,
             padding: EdgeInsets.zero,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(999),
+              borderRadius: BorderRadius.circular(10),
             ),
           ),
           child: Ink(
@@ -44,7 +44,7 @@ class RegisterPrimaryButton extends StatelessWidget {
                     ? const [Color(0xFF6A36D4), Color(0xFF6A36D4)]
                     : const [Color(0xFF6517FF), Color(0xFF7A22FF)],
               ),
-              borderRadius: BorderRadius.circular(999),
+              borderRadius: BorderRadius.circular(10),
             ),
             child: Center(
               child: isLoading

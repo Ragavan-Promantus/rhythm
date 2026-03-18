@@ -119,9 +119,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       _isSubmitting = false;
     });
 
-    _showMessage(
-      'Account created for ${_fullNameController.text.trim()}',
-    );
+    _showMessage('Account created for ${_fullNameController.text.trim()}');
   }
 
   void _goBackToLogin() {
@@ -151,9 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      RegisterTopBar(
-                        onBackPressed: _goBackToLogin,
-                      ),
+                      RegisterTopBar(onBackPressed: _goBackToLogin),
                       const SizedBox(height: 44),
                       const RegisterIntro(),
                       const SizedBox(height: 52),
@@ -235,15 +231,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onPressed: _isSubmitting ? null : _handleSignUp,
                       ),
                       const SizedBox(height: 42),
-                      const RegisterDividerLabel(),
-                      const SizedBox(height: 28),
-                      RegisterSocialButton(
-                        label: 'Google',
-                        onPressed: () => _showMessage(
-                          'Google sign-up is ready for integration.',
-                        ),
-                      ),
-                      const SizedBox(height: 34),
                       Center(
                         child: TextButton(
                           onPressed: _goBackToLogin,

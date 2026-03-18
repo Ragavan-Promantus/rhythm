@@ -51,23 +51,23 @@ class RegisterTextInput extends StatelessWidget {
         filled: true,
         fillColor: const Color(0xFF1A1028),
         contentPadding: const EdgeInsets.symmetric(
-          horizontal: 18,
-          vertical: 24,
+          horizontal: 10,
+          vertical: 10,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(999),
+          borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(color: Color(0xFF3B1280), width: 1.2),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(999),
+          borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(color: Color(0xFF7F2CFF), width: 1.4),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(999),
+          borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(color: Color(0xFFE86A7A), width: 1.2),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(999),
+          borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(color: Color(0xFFE86A7A), width: 1.4),
         ),
         errorStyle: const TextStyle(

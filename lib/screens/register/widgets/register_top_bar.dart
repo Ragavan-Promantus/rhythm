@@ -8,7 +8,8 @@ class RegisterTopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40,
+      height: 30,
+      width: double.infinity,
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -19,7 +20,7 @@ class RegisterTopBar extends StatelessWidget {
               icon: const Icon(
                 Icons.arrow_back_ios_new_rounded,
                 color: Colors.white,
-                size: 28,
+                size: 20,
               ),
               splashRadius: 22,
               padding: EdgeInsets.zero,
