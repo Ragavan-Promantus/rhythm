@@ -49,8 +49,8 @@ class RegisterPrimaryButton extends StatelessWidget {
             child: Center(
               child: isLoading
                   ? const SizedBox(
-                      height: 24,
-                      width: 24,
+                      height: 22,
+                      width: 22,
                       child: CircularProgressIndicator(
                         strokeWidth: 2.6,
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
@@ -59,8 +59,8 @@ class RegisterPrimaryButton extends StatelessWidget {
                   : Text(
                       label,
                       style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800,
+                        fontSize: 19,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
             ),

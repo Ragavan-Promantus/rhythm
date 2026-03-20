@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'widgets/register_divider_label.dart';
 import 'widgets/register_field_heading.dart';
 import 'widgets/register_intro.dart';
 import 'widgets/register_primary_button.dart';
-import 'widgets/register_social_button.dart';
 import 'widgets/register_text_input.dart';
 import 'widgets/register_top_bar.dart';
 

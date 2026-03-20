@@ -46,7 +46,7 @@ class RegisterTextInput extends StatelessWidget {
           fontSize: 17,
           fontWeight: FontWeight.w500,
         ),
-        prefixIcon: Icon(prefixIcon, color: const Color(0xFFAAB1C4), size: 25),
+        prefixIcon: Icon(prefixIcon, color: const Color(0xFFAAB1C4), size: 24),
         suffixIcon: suffix,
         filled: true,
         fillColor: const Color(0xFF1A1028),
