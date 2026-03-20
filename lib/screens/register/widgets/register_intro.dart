@@ -11,7 +11,7 @@ class RegisterIntro extends StatelessWidget {
         Text(
           'Join the Rhythm',
           style: TextStyle(
-            color: Colors.white,
+            color: Color(0xFF111827),
             fontSize: 38,
             fontWeight: FontWeight.w800,
             letterSpacing: -1.4,
@@ -22,7 +22,7 @@ class RegisterIntro extends StatelessWidget {
         Text(
           'Start your musical journey today',
           style: TextStyle(
-            color: Color(0xFF8B93AC),
+            color: Color(0xFF6B7280),
             fontSize: 19,
             fontWeight: FontWeight.w500,
           ),

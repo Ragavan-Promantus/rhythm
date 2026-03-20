@@ -13,8 +13,8 @@ class SocialButton extends StatelessWidget {
       child: OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: Color(0xFF43158E)),
-          backgroundColor: const Color(0xFF180D28),
+          side: const BorderSide(color: Color(0xFFD6CCF5)),
+          backgroundColor: const Color(0xFFFFFFFF),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -25,7 +25,7 @@ class SocialButton extends StatelessWidget {
             const Text(
               'Continue with',
               style: TextStyle(
-                color: Colors.white,
+                color: Color(0xFF111827),
                 fontSize: 17,
                 fontWeight: FontWeight.w500,
               ),

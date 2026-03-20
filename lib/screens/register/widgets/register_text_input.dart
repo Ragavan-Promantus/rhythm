@@ -34,33 +34,33 @@ class RegisterTextInput extends StatelessWidget {
       obscureText: obscureText,
       onFieldSubmitted: onFieldSubmitted,
       style: const TextStyle(
-        color: Colors.white,
+        color: Color(0xFF111827),
         fontSize: 17,
         fontWeight: FontWeight.w500,
       ),
-      cursorColor: Colors.white,
+      cursorColor: const Color(0xFF6D28D9),
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: const TextStyle(
-          color: Color(0xFF72809D),
+          color: Color(0xFF94A3B8),
           fontSize: 17,
           fontWeight: FontWeight.w500,
         ),
-        prefixIcon: Icon(prefixIcon, color: const Color(0xFFAAB1C4), size: 24),
+        prefixIcon: Icon(prefixIcon, color: const Color(0xFF94A3B8), size: 24),
         suffixIcon: suffix,
         filled: true,
-        fillColor: const Color(0xFF1A1028),
+        fillColor: const Color(0xFFFFFFFF),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 10,
           vertical: 10,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Color(0xFF3B1280), width: 1.2),
+          borderSide: const BorderSide(color: Color(0xFFD6CCF5), width: 1.2),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Color(0xFF7F2CFF), width: 1.4),
+          borderSide: const BorderSide(color: Color(0xFF6D28D9), width: 1.4),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),

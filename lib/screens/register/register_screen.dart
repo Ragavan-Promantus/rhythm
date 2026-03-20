@@ -39,7 +39,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ..showSnackBar(
         SnackBar(
           behavior: SnackBarBehavior.floating,
-          backgroundColor: const Color(0xFF231237),
+          backgroundColor: const Color(0xFF1F2937),
           content: Text(message),
         ),
       );
@@ -129,11 +129,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          color: Color(0xFF120B1F),
-          gradient: RadialGradient(
-            center: Alignment(0, -1.15),
-            radius: 1.6,
-            colors: [Color(0xFF211133), Color(0xFF120B1F)],
+          color: Color(0xFFF7F4FF),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFFFFFCFF), Color(0xFFF2ECFF)],
           ),
         ),
         child: SafeArea(
@@ -191,7 +191,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             _obscurePassword
                                 ? Icons.visibility_rounded
                                 : Icons.visibility_off_rounded,
-                            color: const Color(0xFFAAB1C4),
+                            color: const Color(0xFF94A3B8),
                           ),
                         ),
                       ),
@@ -218,7 +218,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             _obscureConfirmPassword
                                 ? Icons.visibility_rounded
                                 : Icons.visibility_off_rounded,
-                            color: const Color(0xFFAAB1C4),
+                            color: const Color(0xFF94A3B8),
                           ),
                         ),
                       ),
@@ -236,7 +236,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             TextSpan(
                               text: 'Already have an account? ',
                               style: TextStyle(
-                                color: Color(0xFF9098AB),
+                                color: Color(0xFF6B7280),
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -244,7 +244,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 TextSpan(
                                   text: 'Log In',
                                   style: TextStyle(
-                                    color: Color(0xFF7F2CFF),
+                                    color: Color(0xFF6D28D9),
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),

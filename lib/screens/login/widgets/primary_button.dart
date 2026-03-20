@@ -18,8 +18,8 @@ class PrimaryButton extends StatelessWidget {
         decoration: const BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Color(0x662E0BC7),
-              blurRadius: 10,
+              color: Color(0x336D28D9),
+              blurRadius: 16,
               offset: Offset(0, 12),
             ),
           ],
@@ -39,8 +39,8 @@ class PrimaryButton extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: isLoading
-                    ? const [Color(0xFF6A36D4), Color(0xFF6A36D4)]
-                    : const [Color(0xFF6517FF), Color(0xFF7A22FF)],
+                    ? const [Color(0xFF8B5CF6), Color(0xFF8B5CF6)]
+                    : const [Color(0xFF7C3AED), Color(0xFF6D28D9)],
               ),
               borderRadius: BorderRadius.circular(10),
             ),

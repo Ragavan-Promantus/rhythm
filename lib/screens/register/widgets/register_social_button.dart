@@ -17,8 +17,8 @@ class RegisterSocialButton extends StatelessWidget {
       child: OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: Color(0xFF43158E), width: 1.2),
-          backgroundColor: const Color(0xFF180D28),
+          side: const BorderSide(color: Color(0xFFD6CCF5), width: 1.2),
+          backgroundColor: const Color(0xFFFFFFFF),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(999),
           ),
@@ -61,7 +61,7 @@ class RegisterSocialButton extends StatelessWidget {
             Text(
               'Continue with $label',
               style: const TextStyle(
-                color: Colors.white,
+                color: Color(0xFF111827),
                 fontSize: 17,
                 fontWeight: FontWeight.w700,
               ),

@@ -13,14 +13,14 @@ class BrandHeader extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: const LinearGradient(
-              colors: [Color(0xFF7A29FF), Color(0xFF4F11D8)],
+              colors: [Color(0xFF8B5CF6), Color(0xFF6D28D9)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
             boxShadow: const [
               BoxShadow(
-                color: Color(0x802D0CC7),
-                blurRadius: 24,
+                color: Color(0x334C1D95),
+                blurRadius: 28,
                 spreadRadius: 2,
                 offset: Offset(0, 12),
               ),
@@ -37,7 +37,7 @@ class BrandHeader extends StatelessWidget {
           'Rhythm',
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: Colors.white,
+            color: Color(0xFF111827),
             fontSize: 40,
             fontWeight: FontWeight.w800,
             letterSpacing: -1.4,
@@ -48,7 +48,7 @@ class BrandHeader extends StatelessWidget {
         const Text(
           'Your world of music',
           style: TextStyle(
-            color: Color(0xFF5814C8),
+            color: Color(0xFF7C3AED),
             fontSize: 17,
             fontWeight: FontWeight.w600,
           ),

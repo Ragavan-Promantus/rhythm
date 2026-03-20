@@ -19,7 +19,7 @@ class RegisterTopBar extends StatelessWidget {
               onPressed: onBackPressed,
               icon: const Icon(
                 Icons.arrow_back_ios_new_rounded,
-                color: Colors.white,
+                color: Color(0xFF111827),
                 size: 20,
               ),
               splashRadius: 22,
@@ -30,7 +30,7 @@ class RegisterTopBar extends StatelessWidget {
           const Text(
             'Create Account',
             style: TextStyle(
-              color: Colors.white,
+              color: Color(0xFF111827),
               fontSize: 20,
               fontWeight: FontWeight.w700,
               letterSpacing: -0.4,

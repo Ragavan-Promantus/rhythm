@@ -10,7 +10,7 @@ class FieldHeading extends StatelessWidget {
     return Text(
       text,
       style: const TextStyle(
-        color: Color(0xFFE7EAF3),
+        color: Color(0xFF111827),
         fontSize: 17,
         fontWeight: FontWeight.w700,
       ),
