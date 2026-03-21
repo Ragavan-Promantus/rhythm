@@ -16,7 +16,7 @@ class RhythmApp extends StatelessWidget {
       title: 'Rhythm',
       theme: ThemeData(
         useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xFF120B1F),
+        scaffoldBackgroundColor: const Color(0xFFF7F4FF),
         fontFamily: 'Roboto',
       ),
       home: const LoginScreen(),

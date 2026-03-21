@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../library/library_screen.dart';
 import '../register/register_screen.dart';
 import 'widgets/brand_header.dart';
 import 'widgets/divider_label.dart';
@@ -51,15 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _isSubmitting = false;
     });
 
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: const Color(0xFF1F2937),
-          content: Text('Welcome back, ${_emailController.text.trim()}'),
-        ),
-      );
+    Navigator.of(context).pushReplacement(_buildLibraryRoute());
   }
 
   void _showMessage(String message) {
@@ -106,14 +99,35 @@ class _LoginScreenState extends State<LoginScreen> {
       transitionDuration: const Duration(milliseconds: 320),
       reverseTransitionDuration: const Duration(milliseconds: 320),
       transitionsBuilder: (_, animation, secondaryAnimation, child) {
-        final offsetAnimation = Tween<Offset>(
-          begin: const Offset(1, 0),
-          end: Offset.zero,
-        ).animate(
-          CurvedAnimation(parent: animation, curve: Curves.easeOutCubic),
-        );
+        final offsetAnimation =
+            Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero).animate(
+              CurvedAnimation(parent: animation, curve: Curves.easeOutCubic),
+            );
 
         return SlideTransition(position: offsetAnimation, child: child);
+      },
+    );
+  }
+
+  Route<void> _buildLibraryRoute() {
+    return PageRouteBuilder<void>(
+      pageBuilder: (_, animation, secondaryAnimation) => const LibraryScreen(),
+      transitionDuration: const Duration(milliseconds: 320),
+      reverseTransitionDuration: const Duration(milliseconds: 320),
+      transitionsBuilder: (_, animation, secondaryAnimation, child) {
+        final fadeAnimation = CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeOutCubic,
+        );
+        final offsetAnimation = Tween<Offset>(
+          begin: const Offset(0, 0.06),
+          end: Offset.zero,
+        ).animate(fadeAnimation);
+
+        return FadeTransition(
+          opacity: fadeAnimation,
+          child: SlideTransition(position: offsetAnimation, child: child),
+        );
       },
     );
   }
