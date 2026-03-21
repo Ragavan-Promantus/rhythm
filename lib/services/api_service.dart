@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 import '../models/app_user.dart';
 import '../models/auth_result.dart';
@@ -14,7 +14,7 @@ class ApiService {
 
   static const String _configuredBaseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: '',
+    defaultValue: 'http://192.168.1.37:5000',
   );
 
   static String get baseUrl {
@@ -68,28 +68,61 @@ class ApiService {
       body: jsonEncode({'identifier': identifier, 'password': password}),
     );
 
-    log('Login response: ${response.statusCode} ${response.body}');
-
     return _parseAuthResponse(response);
   }
 
-  static Future<AuthResult> register({
-    required String name,
+  static Future<String> register({
+    required String username,
     required String email,
     required String password,
+    required String mobile,
+    List<int> profileImage = const [],
+    String? profileImageFilename,
   }) async {
-    final response = await http.post(
-      _uri('/auth/register'),
-      headers: await _headers(),
-      body: jsonEncode({
-        'name': name,
-        'fullName': name,
-        'email': email,
-        'password': password,
-      }),
-    );
+    final payloadLog = {
+      'username': username,
+      'email': email,
+      'password': password,
+      'mobile': mobile,
+      'profile_image_bytes': profileImage.length,
+      'profile_image_filename': profileImageFilename ?? '',
+    };
 
-    return _parseAuthResponse(response);
+    debugPrint('Register payload: ${jsonEncode(payloadLog)}');
+
+    final request = http.MultipartRequest('POST', _uri('/auth/register'));
+    final headers = await _headers();
+    request.headers.addAll(headers..remove('Content-Type'));
+    request.fields.addAll({
+      'username': username,
+      'email': email,
+      'password': password,
+      'mobile': mobile,
+    });
+
+    if (profileImage.isNotEmpty) {
+      request.files.add(
+        http.MultipartFile.fromBytes(
+          'profile_image',
+          profileImage,
+          filename: profileImageFilename ?? 'profile.jpg',
+          contentType: MediaType('image', 'jpeg'),
+        ),
+      );
+    }
+
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+
+    final data = _parseResponseBody(response);
+
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw ApiException(
+        _extractMessage(data, fallback: 'Registration request failed.'),
+      );
+    }
+
+    return _extractMessage(data, fallback: 'User registered successfully');
   }
 
   static Future<List<Song>> fetchSongs() async {
