@@ -5,11 +5,10 @@ import '../../models/app_user.dart';
 import '../../models/song.dart';
 import '../../services/api_service.dart';
 import '../../services/session_service.dart';
-import '../login/login_screen.dart';
+import '../../widgets/common_app_bar.dart';
 import '../profile/user_profile.dart';
 import 'widgets/bottom_nav_item.dart';
 import 'widgets/library_mini_player.dart';
-import 'widgets/round_icon_button.dart';
 import 'widgets/track_row.dart';
 
 class LibraryScreen extends StatefulWidget {
@@ -83,19 +82,6 @@ class _LibraryScreenState extends State<LibraryScreen> {
         'Unable to load songs from ${ApiService.baseUrl}. On a real phone, point API_BASE_URL to your computer LAN IP.',
       );
     }
-  }
-
-  Future<void> _logout() async {
-    await SessionService.clearSession();
-
-    if (!mounted) {
-      return;
-    }
-
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute<void>(builder: (_) => const LoginScreen()),
-      (route) => false,
-    );
   }
 
   Future<void> _openSongUrl(String url) async {
@@ -209,47 +195,19 @@ class _LibraryScreenState extends State<LibraryScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Library',
-                            style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.w800,
-                              color: Color(0xFF111827),
-                              letterSpacing: -0.9,
-                            ),
-                          ),
-                          if (_user != null)
-                            Text(
-                              'Signed in as ${_user!.name}',
-                              style: const TextStyle(
-                                color: Color(0xFF64748B),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                        ],
+                CommonAppBar(
+                  title: 'Library',
+                  user: _user,
+                  subtitle: _user == null
+                      ? null
+                      : 'Welcome back ${_user!.name}',
+                  onAvatarTap: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const UserProfileScreen(),
                       ),
-                    ),
-                    RoundIconButton(
-                      icon: Icons.search_rounded,
-                      onPressed: () => _showMessage(
-                        _isLoading
-                            ? 'Library is still loading.'
-                            : 'Backend search is not available yet.',
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    RoundIconButton(
-                      icon: Icons.logout_rounded,
-                      onPressed: _logout,
-                    ),
-                  ],
+                    );
+                  },
                 ),
                 const SizedBox(height: 22),
                 SizedBox(
