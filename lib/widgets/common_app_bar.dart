@@ -33,6 +33,11 @@ class CommonAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final profileImage = _buildProfileImage();
+    const titleGradient = LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [Color(0xFF7C3AED), Color(0xFF2563EB)],
+    );
 
     return Row(
       children: [
@@ -43,14 +48,20 @@ class CommonAppBar extends StatelessWidget {
                 ? CrossAxisAlignment.center
                 : CrossAxisAlignment.start,
             children: [
-              Text(
-                title,
-                textAlign: centerTitle ? TextAlign.center : TextAlign.start,
-                style: const TextStyle(
-                  color: Color(0xFF111827),
-                  fontSize: 28,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: -0.9,
+              ShaderMask(
+                blendMode: BlendMode.srcIn,
+                shaderCallback: (bounds) => titleGradient.createShader(
+                  Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                ),
+                child: Text(
+                  title,
+                  textAlign: centerTitle ? TextAlign.center : TextAlign.start,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 28,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.9,
+                  ),
                 ),
               ),
               if ((subtitle ?? '').trim().isNotEmpty) ...[
