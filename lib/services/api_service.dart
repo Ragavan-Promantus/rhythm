@@ -40,6 +40,18 @@ class ApiService {
 
   static String downloadUrl(String songId) => '$baseUrl/songs/$songId/download';
 
+  static String resolveMediaUrl(String path) {
+    if (path.isEmpty) {
+      return '';
+    }
+
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return path;
+    }
+
+    return '$baseUrl$path';
+  }
+
   static Future<Map<String, String>> _headers({
     bool includeAuth = false,
   }) async {
@@ -153,6 +165,43 @@ class ApiService {
         .map(Song.fromJson)
         .where((song) => song.id.isNotEmpty)
         .toList();
+  }
+
+  static Future<AppUser> fetchCurrentUser() async {
+    final sessionUser = await SessionService.readUser();
+    final userId = sessionUser?.id ?? '';
+
+    if (userId.isEmpty) {
+      throw const ApiException(
+        'No logged-in user id found in the current session.',
+      );
+    }
+
+    final response = await http.get(
+      _uri('/auth/me/$userId'),
+      headers: await _headers(includeAuth: true),
+    );
+
+    final data = _parseResponseBody(response);
+
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw ApiException(
+        _extractMessage(data, fallback: 'Unable to load user profile.'),
+      );
+    }
+
+    if (data is! Map<String, dynamic>) {
+      throw const ApiException('Unexpected profile response format.');
+    }
+
+    final userJson =
+        (data['user'] as Map<String, dynamic>?) ??
+        (data['data'] as Map<String, dynamic>?) ??
+        data;
+
+    final user = AppUser.fromJson(userJson);
+    await SessionService.saveUser(user);
+    return user;
   }
 
   static AuthResult _parseAuthResponse(http.Response response) {

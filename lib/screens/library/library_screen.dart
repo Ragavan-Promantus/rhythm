@@ -6,6 +6,7 @@ import '../../models/song.dart';
 import '../../services/api_service.dart';
 import '../../services/session_service.dart';
 import '../login/login_screen.dart';
+import '../profile/user_profile.dart';
 import 'widgets/bottom_nav_item.dart';
 import 'widgets/library_mini_player.dart';
 import 'widgets/round_icon_button.dart';
@@ -432,6 +433,11 @@ class _LibraryScreenState extends State<LibraryScreen> {
                           setState(() {
                             _selectedNav = 3;
                           });
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute<void>(
+                              builder: (_) => const UserProfileScreen(),
+                            ),
+                          );
                         },
                       ),
                     ],

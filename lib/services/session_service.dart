@@ -21,6 +21,10 @@ class SessionService {
     ]);
   }
 
+  static Future<void> saveUser(AppUser user) {
+    return _storage.write(key: _userKey, value: jsonEncode(user.toJson()));
+  }
+
   static Future<String?> readToken() {
     return _storage.read(key: _tokenKey);
   }
