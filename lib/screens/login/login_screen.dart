@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../library/library_screen.dart';
 import '../register/register_screen.dart';
+import '../../services/api_service.dart';
+import '../../services/session_service.dart';
 import 'widgets/brand_header.dart';
 import 'widgets/divider_label.dart';
 import 'widgets/field_heading.dart';
@@ -42,17 +44,43 @@ class _LoginScreenState extends State<LoginScreen> {
       _isSubmitting = true;
     });
 
-    await Future<void>.delayed(const Duration(milliseconds: 1200));
+    try {
+      final result = await ApiService.login(
+        identifier: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
+      await SessionService.saveSession(token: result.token, user: result.user);
 
-    if (!mounted) {
-      return;
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _isSubmitting = false;
+      });
+
+      Navigator.of(context).pushReplacement(_buildLibraryRoute());
+    } on ApiException catch (error) {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _isSubmitting = false;
+      });
+      _showMessage(error.message);
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _isSubmitting = false;
+      });
+      _showMessage(
+        'Unable to reach ${ApiService.baseUrl}. On a real phone, use your computer LAN IP with --dart-define=API_BASE_URL=http://192.168.x.x:5000.',
+      );
     }
-
-    setState(() {
-      _isSubmitting = false;
-    });
-
-    Navigator.of(context).pushReplacement(_buildLibraryRoute());
   }
 
   void _showMessage(String message) {
@@ -67,15 +95,10 @@ class _LoginScreenState extends State<LoginScreen> {
       );
   }
 
-  String? _validateEmail(String? value) {
-    final email = value?.trim() ?? '';
-    if (email.isEmpty) {
-      return 'Please enter your email address.';
-    }
-
-    final emailPattern = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
-    if (!emailPattern.hasMatch(email)) {
-      return 'Enter a valid email address.';
+  String? _validateIdentifier(String? value) {
+    final identifier = value?.trim() ?? '';
+    if (identifier.isEmpty) {
+      return 'Please enter your email or username.';
     }
 
     return null;
@@ -84,10 +107,6 @@ class _LoginScreenState extends State<LoginScreen> {
   String? _validatePassword(String? value) {
     if ((value ?? '').isEmpty) {
       return 'Please enter your password.';
-    }
-
-    if (value!.length < 8) {
-      return 'Password must be at least 8 characters.';
     }
 
     return null;
@@ -158,15 +177,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 20),
                       const BrandHeader(),
                       const SizedBox(height: 52),
-                      const FieldHeading(text: 'Email Address'),
+                      const FieldHeading(text: 'Email Or Username'),
                       const SizedBox(height: 12),
                       TextInput(
                         controller: _emailController,
-                        hintText: 'name@example.com',
+                        hintText: 'ragavan@test.com',
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
                         prefixIcon: Icons.mail_rounded,
-                        validator: _validateEmail,
+                        validator: _validateIdentifier,
                       ),
                       const SizedBox(height: 26),
                       Row(

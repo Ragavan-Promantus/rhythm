@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../library/library_screen.dart';
+import '../../services/api_service.dart';
+import '../../services/session_service.dart';
 import 'widgets/register_field_heading.dart';
 import 'widgets/register_intro.dart';
 import 'widgets/register_primary_button.dart';
@@ -107,17 +110,47 @@ class _RegisterScreenState extends State<RegisterScreen> {
       _isSubmitting = true;
     });
 
-    await Future<void>.delayed(const Duration(milliseconds: 1200));
+    try {
+      final result = await ApiService.register(
+        name: _fullNameController.text.trim(),
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
+      await SessionService.saveSession(token: result.token, user: result.user);
 
-    if (!mounted) {
-      return;
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _isSubmitting = false;
+      });
+
+      _showMessage('Account created for ${result.user.name}');
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute<void>(builder: (_) => const LibraryScreen()),
+      );
+    } on ApiException catch (error) {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _isSubmitting = false;
+      });
+      _showMessage(error.message);
+    } catch (_) {
+      if (!mounted) {
+        return;
+      }
+
+      setState(() {
+        _isSubmitting = false;
+      });
+      _showMessage(
+        'Unable to reach the music server. Check that port 5000 is running.',
+      );
     }
-
-    setState(() {
-      _isSubmitting = false;
-    });
-
-    _showMessage('Account created for ${_fullNameController.text.trim()}');
   }
 
   void _goBackToLogin() {
