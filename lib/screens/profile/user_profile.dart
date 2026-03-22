@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../models/app_user.dart';
 import '../../services/api_service.dart';
 import '../../services/session_service.dart';
+import 'widgets/add_new_music_sheet.dart';
 import '../library/library_screen.dart';
 import '../login/login_screen.dart';
 
@@ -149,6 +150,31 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           ),
         );
       },
+    );
+  }
+
+  Future<void> _openAddMusicScreen() async {
+    await Navigator.of(context).push(
+      PageRouteBuilder<void>(
+        pageBuilder: (_, animation, secondaryAnimation) => AddNewMusicScreen(
+          onTrackCreated: () {
+            _loadProfile();
+          },
+        ),
+        transitionDuration: const Duration(milliseconds: 320),
+        reverseTransitionDuration: const Duration(milliseconds: 320),
+        transitionsBuilder: (_, animation, secondaryAnimation, child) {
+          final offsetAnimation =
+              Tween<Offset>(
+                begin: const Offset(1, 0),
+                end: Offset.zero,
+              ).animate(
+                CurvedAnimation(parent: animation, curve: Curves.easeOutCubic),
+              );
+
+          return SlideTransition(position: offsetAnimation, child: child);
+        },
+      ),
     );
   }
 
@@ -311,6 +337,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 fontSize: 22,
                                 fontWeight: FontWeight.w800,
                               ),
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: _openAddMusicScreen,
+                            icon: const Icon(
+                              Icons.add_rounded,
+                              color: Color(0xFF6D28D9),
+                              size: 24,
                             ),
                           ),
                           IconButton(

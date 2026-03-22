@@ -204,6 +204,76 @@ class ApiService {
     return user;
   }
 
+  static Future<String> createSong({
+    required String title,
+    required String artist,
+    required String album,
+    required String genre,
+    required String durationSeconds,
+    required String releaseDate,
+    required Uint8List audioBytes,
+    required String audioFileName,
+    Uint8List? videoBytes,
+    String? videoFileName,
+    Uint8List? coverBytes,
+    String? coverFileName,
+  }) async {
+    final request = http.MultipartRequest('POST', _uri('/songs'));
+    final headers = await _headers(includeAuth: true);
+    request.headers.addAll(headers..remove('Content-Type'));
+    request.fields.addAll({
+      'title': title,
+      'artist': artist,
+      'album': album,
+      'genre': genre,
+      'duration': durationSeconds,
+      'release_date': releaseDate,
+    });
+
+    request.files.add(
+      http.MultipartFile.fromBytes(
+        'audio_file',
+        audioBytes,
+        filename: audioFileName,
+        contentType: MediaType('audio', 'mpeg'),
+      ),
+    );
+
+    if (videoBytes != null && videoBytes.isNotEmpty) {
+      request.files.add(
+        http.MultipartFile.fromBytes(
+          'video_file',
+          videoBytes,
+          filename: videoFileName ?? 'track.mp4',
+          contentType: MediaType('video', 'mp4'),
+        ),
+      );
+    }
+
+    if (coverBytes != null && coverBytes.isNotEmpty) {
+      request.files.add(
+        http.MultipartFile.fromBytes(
+          'cover_image',
+          coverBytes,
+          filename: coverFileName ?? 'cover.jpg',
+          contentType: MediaType('image', 'jpeg'),
+        ),
+      );
+    }
+
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+    final data = _parseResponseBody(response);
+
+    if (response.statusCode < 200 || response.statusCode >= 300) {
+      throw ApiException(
+        _extractMessage(data, fallback: 'Unable to create the track.'),
+      );
+    }
+
+    return _extractMessage(data, fallback: 'Track created successfully');
+  }
+
   static AuthResult _parseAuthResponse(http.Response response) {
     final data = _parseResponseBody(response);
 
