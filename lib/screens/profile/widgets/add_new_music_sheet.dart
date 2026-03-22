@@ -322,7 +322,7 @@ class _AddNewMusicScreenState extends State<AddNewMusicScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildSectionLabel('TRACK TITLE'),
+                _buildSectionLabel('Track Title'),
                 _buildInput(
                   controller: _titleController,
                   hintText: 'e.g. Blinding Lights',
@@ -338,7 +338,7 @@ class _AddNewMusicScreenState extends State<AddNewMusicScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildSectionLabel('ARTIST'),
+                          _buildSectionLabel('Artist'),
                           _buildInput(
                             controller: _artistController,
                             hintText: 'The Weeknd',
@@ -355,7 +355,7 @@ class _AddNewMusicScreenState extends State<AddNewMusicScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildSectionLabel('ALBUM'),
+                          _buildSectionLabel('Album'),
                           _buildInput(
                             controller: _albumController,
                             hintText: 'After Hours',
@@ -367,7 +367,7 @@ class _AddNewMusicScreenState extends State<AddNewMusicScreen> {
                   ],
                 ),
                 const SizedBox(height: 16),
-                _buildSectionLabel('GENRE'),
+                _buildSectionLabel('Genre'),
                 Wrap(
                   spacing: 10,
                   runSpacing: 10,
@@ -400,7 +400,7 @@ class _AddNewMusicScreenState extends State<AddNewMusicScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildSectionLabel('DURATION (SEC)'),
+                          _buildSectionLabel('Duration (Sec)'),
                           _buildInput(
                             controller: _durationController,
                             hintText: '200',
@@ -415,7 +415,7 @@ class _AddNewMusicScreenState extends State<AddNewMusicScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildSectionLabel('RELEASE DATE'),
+                          _buildSectionLabel('Release Date'),
                           _buildInput(
                             controller: _releaseDateController,
                             hintText: 'yyyy-mm-dd',
@@ -435,7 +435,7 @@ class _AddNewMusicScreenState extends State<AddNewMusicScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildSectionLabel('AUDIO FILE'),
+                          _buildSectionLabel('Audio File'),
                           _buildUploadBox(
                             title: 'MP3 UPLOAD',
                             subtitle: 'Required',
@@ -451,7 +451,7 @@ class _AddNewMusicScreenState extends State<AddNewMusicScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildSectionLabel('VIDEO FILE'),
+                          _buildSectionLabel('Video File'),
                           _buildUploadBox(
                             title: 'MP4 UPLOAD',
                             subtitle: 'Optional',
@@ -465,7 +465,7 @@ class _AddNewMusicScreenState extends State<AddNewMusicScreen> {
                   ],
                 ),
                 const SizedBox(height: 18),
-                _buildSectionLabel('AUDIO PROFILE / COVER ART'),
+                _buildSectionLabel('Audio Profile / Cover Art'),
                 _buildUploadBox(
                   title: 'Upload Cover Image',
                   subtitle: 'JPG, PNG up to 10MB',

@@ -4,8 +4,10 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../models/app_user.dart';
 import '../../models/song.dart';
 import '../../services/api_service.dart';
+import '../../services/playback_service.dart';
 import '../../services/session_service.dart';
 import '../../widgets/common_app_bar.dart';
+import '../now_playing/now_playing_screen.dart';
 import '../profile/user_profile.dart';
 import 'widgets/bottom_nav_item.dart';
 import 'widgets/library_mini_player.dart';
@@ -26,6 +28,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
   bool _isLoading = true;
   AppUser? _user;
   List<Song> _songs = const [];
+  final PlaybackService _playback = PlaybackService.instance;
 
   @override
   void initState() {
@@ -94,6 +97,18 @@ class _LibraryScreenState extends State<LibraryScreen> {
     if (mounted) {
       _showMessage('Could not open $url');
     }
+  }
+
+  Future<void> _playSong(Song song, int index) async {
+    await _playback.playSong(song, queue: _songs, index: index);
+
+    if (!mounted) {
+      return;
+    }
+
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute<void>(builder: (_) => const NowPlayingScreen()));
   }
 
   Future<void> _showSongActions(Song song) async {
@@ -178,234 +193,249 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final activeSong = _songs.isNotEmpty ? _songs.first : null;
+    return AnimatedBuilder(
+      animation: _playback,
+      builder: (context, _) {
+        final activeSong = _playback.currentSong;
 
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFFFFFCFF), Color(0xFFF1F4FF)],
-          ),
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CommonAppBar(
-                  title: 'Library',
-                  user: _user,
-                  subtitle: _user == null
-                      ? null
-                      : 'Welcome back ${_user!.name}',
-                  onAvatarTap: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute<void>(
-                        builder: (_) => const UserProfileScreen(),
-                      ),
-                    );
-                  },
-                ),
-                const SizedBox(height: 22),
-                SizedBox(
-                  height: 34,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _tabs.length,
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(width: 20),
-                    itemBuilder: (context, index) {
-                      final isSelected = _selectedTab == index;
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _selectedTab = index;
-                          });
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              _tabs[index],
-                              style: TextStyle(
-                                color: isSelected
-                                    ? const Color(0xFF5B21F6)
-                                    : const Color(0xFF94A3B8),
-                                fontSize: 15,
-                                fontWeight: isSelected
-                                    ? FontWeight.w700
-                                    : FontWeight.w600,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            AnimatedContainer(
-                              duration: const Duration(milliseconds: 180),
-                              height: 6,
-                              width: 6,
-                              decoration: BoxDecoration(
-                                color: isSelected
-                                    ? const Color(0xFF5B21F6)
-                                    : Colors.transparent,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(height: 22),
-                Expanded(
-                  child: _isLoading
-                      ? const Center(child: CircularProgressIndicator())
-                      : _songs.isEmpty
-                      ? Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(
-                                Icons.library_music_outlined,
-                                size: 44,
-                                color: Color(0xFF94A3B8),
-                              ),
-                              const SizedBox(height: 14),
-                              const Text(
-                                'No songs found',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color(0xFF111827),
-                                ),
-                              ),
-                              const SizedBox(height: 6),
-                              const Text(
-                                'Your backend returned an empty library.',
-                                style: TextStyle(
-                                  color: Color(0xFF64748B),
-                                  fontSize: 14,
-                                ),
-                              ),
-                              const SizedBox(height: 18),
-                              FilledButton.tonal(
-                                onPressed: () {
-                                  setState(() {
-                                    _isLoading = true;
-                                  });
-                                  _loadLibrary();
-                                },
-                                child: const Text('Refresh'),
-                              ),
-                            ],
+        return Scaffold(
+          body: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Color(0xFFFFFCFF), Color(0xFFF1F4FF)],
+              ),
+            ),
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(24, 20, 24, 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CommonAppBar(
+                      title: 'Library',
+                      user: _user,
+                      subtitle: _user == null
+                          ? null
+                          : 'Welcome back ${_user!.name}',
+                      onAvatarTap: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute<void>(
+                            builder: (_) => const UserProfileScreen(),
                           ),
-                        )
-                      : RefreshIndicator(
-                          onRefresh: _loadLibrary,
-                          child: ListView.separated(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            itemCount: _songs.length,
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(height: 18),
-                            itemBuilder: (context, index) {
-                              final song = _songs[index];
-                              return TrackRow(
-                                title: song.title,
-                                artistAlbum: '${song.artist} • ${song.album}',
-                                palette: _paletteForSong(song),
-                                icon: _iconForSong(song),
-                                isActive: index == 0,
-                                onMorePressed: () => _showSongActions(song),
-                              );
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 22),
+                    SizedBox(
+                      height: 34,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: _tabs.length,
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(width: 20),
+                        itemBuilder: (context, index) {
+                          final isSelected = _selectedTab == index;
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _selectedTab = index;
+                              });
                             },
-                          ),
-                        ),
-                ),
-                const SizedBox(height: 14),
-                if (activeSong != null)
-                  LibraryMiniPlayer(
-                    title: activeSong.title,
-                    artist: activeSong.artist,
-                    palette: _paletteForSong(activeSong),
-                    icon: _iconForSong(activeSong),
-                    onDevicesPressed: () =>
-                        _showMessage('Device handoff is not available yet.'),
-                    onPausePressed: () =>
-                        _openSongUrl(ApiService.streamUrl(activeSong.id)),
-                  ),
-                if (activeSong != null) const SizedBox(height: 10),
-                const SizedBox(height: 10),
-                Container(
-                  height: 72,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFFFFFF),
-                    borderRadius: BorderRadius.circular(24),
-                    border: Border.all(color: const Color(0xFFE2E8F0)),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color(0x0F0F172A),
-                        blurRadius: 18,
-                        offset: Offset(0, 8),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      BottomNavItem(
-                        icon: Icons.home_outlined,
-                        label: 'Home',
-                        isSelected: _selectedNav == 0,
-                        onTap: () {
-                          setState(() {
-                            _selectedNav = 0;
-                          });
-                        },
-                      ),
-                      BottomNavItem(
-                        icon: Icons.explore_outlined,
-                        label: 'Explore',
-                        isSelected: _selectedNav == 1,
-                        onTap: () {
-                          setState(() {
-                            _selectedNav = 1;
-                          });
-                        },
-                      ),
-                      BottomNavItem(
-                        icon: Icons.library_music_outlined,
-                        label: 'Library',
-                        isSelected: _selectedNav == 2,
-                        onTap: () {
-                          setState(() {
-                            _selectedNav = 2;
-                          });
-                        },
-                      ),
-                      BottomNavItem(
-                        icon: Icons.person_outline_rounded,
-                        label: 'Profile',
-                        isSelected: _selectedNav == 3,
-                        onTap: () {
-                          setState(() {
-                            _selectedNav = 3;
-                          });
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute<void>(
-                              builder: (_) => const UserProfileScreen(),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  _tabs[index],
+                                  style: TextStyle(
+                                    color: isSelected
+                                        ? const Color(0xFF5B21F6)
+                                        : const Color(0xFF94A3B8),
+                                    fontSize: 15,
+                                    fontWeight: isSelected
+                                        ? FontWeight.w700
+                                        : FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                AnimatedContainer(
+                                  duration: const Duration(milliseconds: 180),
+                                  height: 6,
+                                  width: 6,
+                                  decoration: BoxDecoration(
+                                    color: isSelected
+                                        ? const Color(0xFF5B21F6)
+                                        : Colors.transparent,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                              ],
                             ),
                           );
                         },
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 22),
+                    Expanded(
+                      child: _isLoading
+                          ? const Center(child: CircularProgressIndicator())
+                          : _songs.isEmpty
+                          ? Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(
+                                    Icons.library_music_outlined,
+                                    size: 44,
+                                    color: Color(0xFF94A3B8),
+                                  ),
+                                  const SizedBox(height: 14),
+                                  const Text(
+                                    'No songs found',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xFF111827),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  const Text(
+                                    'Your backend returned an empty library.',
+                                    style: TextStyle(
+                                      color: Color(0xFF64748B),
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 18),
+                                  FilledButton.tonal(
+                                    onPressed: () {
+                                      setState(() {
+                                        _isLoading = true;
+                                      });
+                                      _loadLibrary();
+                                    },
+                                    child: const Text('Refresh'),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : RefreshIndicator(
+                              onRefresh: _loadLibrary,
+                              child: ListView.separated(
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                itemCount: _songs.length,
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(height: 18),
+                                itemBuilder: (context, index) {
+                                  final song = _songs[index];
+                                  return TrackRow(
+                                    title: song.title,
+                                    artistAlbum:
+                                        '${song.artist} • ${song.album}',
+                                    palette: _paletteForSong(song),
+                                    icon: _iconForSong(song),
+                                    isActive: activeSong?.id == song.id,
+                                    onTap: () => _playSong(song, index),
+                                    onMorePressed: () => _showSongActions(song),
+                                  );
+                                },
+                              ),
+                            ),
+                    ),
+                    const SizedBox(height: 14),
+                    if (activeSong != null)
+                      LibraryMiniPlayer(
+                        title: activeSong.title,
+                        artist: activeSong.artist,
+                        palette: _paletteForSong(activeSong),
+                        icon: _iconForSong(activeSong),
+                        isPlaying: _playback.isPlaying,
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute<void>(
+                              builder: (_) => const NowPlayingScreen(),
+                            ),
+                          );
+                        },
+                        onDevicesPressed: () => _showMessage(
+                          'Device handoff is not available yet.',
+                        ),
+                        onPausePressed: _playback.togglePlayPause,
+                      ),
+                    if (activeSong != null) const SizedBox(height: 10),
+                    const SizedBox(height: 10),
+                    Container(
+                      height: 72,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFFFFFF),
+                        borderRadius: BorderRadius.circular(24),
+                        border: Border.all(color: const Color(0xFFE2E8F0)),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0x0F0F172A),
+                            blurRadius: 18,
+                            offset: Offset(0, 8),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          BottomNavItem(
+                            icon: Icons.home_outlined,
+                            label: 'Home',
+                            isSelected: _selectedNav == 0,
+                            onTap: () {
+                              setState(() {
+                                _selectedNav = 0;
+                              });
+                            },
+                          ),
+                          BottomNavItem(
+                            icon: Icons.explore_outlined,
+                            label: 'Explore',
+                            isSelected: _selectedNav == 1,
+                            onTap: () {
+                              setState(() {
+                                _selectedNav = 1;
+                              });
+                            },
+                          ),
+                          BottomNavItem(
+                            icon: Icons.library_music_outlined,
+                            label: 'Library',
+                            isSelected: _selectedNav == 2,
+                            onTap: () {
+                              setState(() {
+                                _selectedNav = 2;
+                              });
+                            },
+                          ),
+                          BottomNavItem(
+                            icon: Icons.person_outline_rounded,
+                            label: 'Profile',
+                            isSelected: _selectedNav == 3,
+                            onTap: () {
+                              setState(() {
+                                _selectedNav = 3;
+                              });
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute<void>(
+                                  builder: (_) => const UserProfileScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
