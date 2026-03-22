@@ -106,9 +106,15 @@ class _LibraryScreenState extends State<LibraryScreen> {
       return;
     }
 
-    Navigator.of(
-      context,
-    ).push(MaterialPageRoute<void>(builder: (_) => const NowPlayingScreen()));
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => NowPlayingScreen(
+          key: ValueKey<String>(
+            'now-playing-${song.id}-${DateTime.now().microsecondsSinceEpoch}',
+          ),
+        ),
+      ),
+    );
   }
 
   Future<void> _showSongActions(Song song) async {

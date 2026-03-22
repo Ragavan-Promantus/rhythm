@@ -40,12 +40,17 @@ class NowPlayingScreen extends StatelessWidget {
             playback.duration == Duration.zero && song.durationSeconds != null
             ? Duration(seconds: song.durationSeconds!)
             : playback.duration;
+        final elapsed = total == Duration.zero
+            ? playback.position
+            : Duration(
+                milliseconds: playback.position.inMilliseconds.clamp(
+                  0,
+                  total.inMilliseconds,
+                ),
+              );
         final progress = total.inMilliseconds == 0
             ? 0.0
-            : (playback.position.inMilliseconds / total.inMilliseconds).clamp(
-                0.0,
-                1.0,
-              );
+            : (elapsed.inMilliseconds / total.inMilliseconds).clamp(0.0, 1.0);
         final coverPath = song.coverImage;
 
         return Scaffold(
@@ -233,7 +238,7 @@ class NowPlayingScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            _formatDuration(playback.position),
+                            _formatDuration(elapsed),
                             style: const TextStyle(
                               color: Color(0xFF64748B),
                               fontWeight: FontWeight.w600,

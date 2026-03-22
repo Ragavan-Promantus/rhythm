@@ -59,11 +59,21 @@ class PlaybackService extends ChangeNotifier {
       _currentIndex < _queue.length - 1;
   bool get _canPlayPrevious => _queue.isNotEmpty && _currentIndex > 0;
 
+  void _resetTimeline({Song? song}) {
+    _position = Duration.zero;
+    _duration = song?.durationSeconds != null
+        ? Duration(seconds: song!.durationSeconds!)
+        : Duration.zero;
+    _isPlaying = false;
+  }
+
   Future<void> playSong(
     Song song, {
     List<Song> queue = const [],
     int? index,
   }) async {
+    await _player.stop();
+
     _queue = queue.isNotEmpty ? queue : [song];
     _currentIndex = index ?? _queue.indexWhere((item) => item.id == song.id);
     if (_currentIndex < 0) {
@@ -71,10 +81,7 @@ class PlaybackService extends ChangeNotifier {
     }
 
     _currentSong = song;
-    _position = Duration.zero;
-    _duration = song.durationSeconds != null
-        ? Duration(seconds: song.durationSeconds!)
-        : Duration.zero;
+    _resetTimeline(song: song);
     notifyListeners();
 
     await _player.play(UrlSource(ApiService.streamUrl(song.id)));
