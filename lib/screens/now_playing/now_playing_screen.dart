@@ -50,15 +50,12 @@ class NowPlayingScreen extends StatelessWidget {
 
         return Scaffold(
           body: Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
+              color: Color(0xFFF8FAFC),
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  palette[0],
-                  const Color(0xFF24103C),
-                  const Color(0xFF1B1330),
-                ],
+                colors: [Color(0xFFFFFFFF), Color(0xFFF1F5F9)],
               ),
             ),
             child: SafeArea(
@@ -73,7 +70,7 @@ class NowPlayingScreen extends StatelessWidget {
                           onPressed: () => Navigator.of(context).pop(),
                           icon: const Icon(
                             Icons.keyboard_arrow_down_rounded,
-                            color: Colors.white,
+                            color: Color(0xFF111827),
                             size: 28,
                           ),
                         ),
@@ -83,7 +80,7 @@ class NowPlayingScreen extends StatelessWidget {
                               Text(
                                 'PLAYING FROM',
                                 style: TextStyle(
-                                  color: Color(0xFFB8AFD8),
+                                  color: Color(0xFF94A3B8),
                                   fontSize: 10,
                                   fontWeight: FontWeight.w800,
                                   letterSpacing: 2,
@@ -93,7 +90,7 @@ class NowPlayingScreen extends StatelessWidget {
                               Text(
                                 'Midnight Melodies Playlist',
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: Color(0xFF111827),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -105,7 +102,7 @@ class NowPlayingScreen extends StatelessWidget {
                           onPressed: () {},
                           icon: const Icon(
                             Icons.more_horiz_rounded,
-                            color: Colors.white,
+                            color: Color(0xFF111827),
                           ),
                         ),
                       ],
@@ -116,14 +113,15 @@ class NowPlayingScreen extends StatelessWidget {
                       width: double.infinity,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(28),
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Colors.white.withValues(alpha: 0.12),
-                            Colors.white.withValues(alpha: 0.04),
-                          ],
-                        ),
+                        color: const Color(0xFFFFFFFF),
+                        border: Border.all(color: const Color(0xFFE2E8F0)),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0x0A0F172A),
+                            blurRadius: 24,
+                            offset: Offset(0, 10),
+                          ),
+                        ],
                       ),
                       child: Center(
                         child: Container(
@@ -175,7 +173,7 @@ class NowPlayingScreen extends StatelessWidget {
                               Text(
                                 song.title,
                                 style: const TextStyle(
-                                  color: Colors.white,
+                                  color: Color(0xFF111827),
                                   fontSize: 22,
                                   fontWeight: FontWeight.w800,
                                 ),
@@ -196,7 +194,7 @@ class NowPlayingScreen extends StatelessWidget {
                           onPressed: () {},
                           icon: const Icon(
                             Icons.favorite_rounded,
-                            color: Color(0xFFC4B5FD),
+                            color: Color(0xFF94A3B8),
                             size: 30,
                           ),
                         ),
@@ -211,7 +209,7 @@ class NowPlayingScreen extends StatelessWidget {
                         ),
                         overlayShape: SliderComponentShape.noOverlay,
                         activeTrackColor: const Color(0xFF7C3AED),
-                        inactiveTrackColor: const Color(0xFF4B5563),
+                        inactiveTrackColor: const Color(0xFFD1D5DB),
                       ),
                       child: Slider(
                         value: progress,
@@ -237,14 +235,14 @@ class NowPlayingScreen extends StatelessWidget {
                           Text(
                             _formatDuration(playback.position),
                             style: const TextStyle(
-                              color: Color(0xFFB8AFD8),
+                              color: Color(0xFF64748B),
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                           Text(
                             _formatDuration(total),
                             style: const TextStyle(
-                              color: Color(0xFFB8AFD8),
+                              color: Color(0xFF64748B),
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -259,7 +257,7 @@ class NowPlayingScreen extends StatelessWidget {
                           onPressed: () {},
                           icon: const Icon(
                             Icons.shuffle_rounded,
-                            color: Color(0xFFC4B5FD),
+                            color: Color(0xFF8B5CF6),
                             size: 28,
                           ),
                         ),
@@ -270,8 +268,8 @@ class NowPlayingScreen extends StatelessWidget {
                           icon: Icon(
                             Icons.skip_previous_rounded,
                             color: playback.canPlayPrevious
-                                ? Colors.white
-                                : Colors.white24,
+                                ? const Color(0xFF111827)
+                                : const Color(0xFFCBD5E1),
                             size: 34,
                           ),
                         ),
@@ -311,8 +309,8 @@ class NowPlayingScreen extends StatelessWidget {
                           icon: Icon(
                             Icons.skip_next_rounded,
                             color: playback.canPlayNext
-                                ? Colors.white
-                                : Colors.white24,
+                                ? const Color(0xFF111827)
+                                : const Color(0xFFCBD5E1),
                             size: 34,
                           ),
                         ),
@@ -349,7 +347,7 @@ class NowPlayingScreen extends StatelessWidget {
                           onPressed: () {},
                           icon: const Icon(
                             Icons.share_outlined,
-                            color: Color(0xFFC4B5FD),
+                            color: Color(0xFF8B5CF6),
                           ),
                         ),
                       ],
@@ -361,20 +359,18 @@ class NowPlayingScreen extends StatelessWidget {
                         vertical: 18,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.06),
+                        color: const Color(0xFFFFFFFF),
                         borderRadius: BorderRadius.circular(22),
-                        border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.08),
-                        ),
+                        border: Border.all(color: const Color(0xFFE2E8F0)),
                       ),
                       child: const Row(
                         children: [
                           CircleAvatar(
                             radius: 18,
-                            backgroundColor: Color(0xFF3B0A72),
+                            backgroundColor: Color(0xFFF3E8FF),
                             child: Icon(
                               Icons.queue_music_rounded,
-                              color: Color(0xFFC4B5FD),
+                              color: Color(0xFF7C3AED),
                             ),
                           ),
                           SizedBox(width: 12),
@@ -382,14 +378,14 @@ class NowPlayingScreen extends StatelessWidget {
                             child: Text(
                               'Up Next: Lyrics',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Color(0xFF111827),
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
                           ),
                           Icon(
                             Icons.keyboard_arrow_up_rounded,
-                            color: Color(0xFFC4B5FD),
+                            color: Color(0xFF8B5CF6),
                           ),
                         ],
                       ),

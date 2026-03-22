@@ -8,6 +8,7 @@ class TrackRow extends StatelessWidget {
     required this.artistAlbum,
     required this.palette,
     required this.icon,
+    required this.imagePath,
     required this.isActive,
     required this.onTap,
     required this.onMorePressed,
@@ -18,6 +19,7 @@ class TrackRow extends StatelessWidget {
   final String artistAlbum;
   final List<Color> palette;
   final IconData icon;
+  final String imagePath;
   final bool isActive;
   final VoidCallback onTap;
   final VoidCallback onMorePressed;
@@ -31,7 +33,12 @@ class TrackRow extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 4),
         child: Row(
           children: [
-            AlbumArt(palette: palette, icon: icon, size: 46),
+            AlbumArt(
+              palette: palette,
+              icon: icon,
+              size: 46,
+              imagePath: imagePath,
+            ),
             const SizedBox(width: 14),
             Expanded(
               child: Column(

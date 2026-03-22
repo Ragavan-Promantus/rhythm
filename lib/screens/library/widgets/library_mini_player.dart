@@ -8,6 +8,7 @@ class LibraryMiniPlayer extends StatelessWidget {
     required this.artist,
     required this.palette,
     required this.icon,
+    required this.imagePath,
     required this.isPlaying,
     required this.onTap,
     required this.onDevicesPressed,
@@ -19,6 +20,7 @@ class LibraryMiniPlayer extends StatelessWidget {
   final String artist;
   final List<Color> palette;
   final IconData icon;
+  final String imagePath;
   final bool isPlaying;
   final VoidCallback onTap;
   final VoidCallback onDevicesPressed;
@@ -45,7 +47,12 @@ class LibraryMiniPlayer extends StatelessWidget {
         ),
         child: Row(
           children: [
-            AlbumArt(palette: palette, icon: icon, size: 44),
+            AlbumArt(
+              palette: palette,
+              icon: icon,
+              size: 44,
+              imagePath: imagePath,
+            ),
             const SizedBox(width: 12),
             Expanded(
               child: Column(

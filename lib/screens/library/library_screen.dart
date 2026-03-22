@@ -335,6 +335,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                                         '${song.artist} • ${song.album}',
                                     palette: _paletteForSong(song),
                                     icon: _iconForSong(song),
+                                    imagePath: song.coverImage,
                                     isActive: activeSong?.id == song.id,
                                     onTap: () => _playSong(song, index),
                                     onMorePressed: () => _showSongActions(song),
@@ -350,6 +351,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                         artist: activeSong.artist,
                         palette: _paletteForSong(activeSong),
                         icon: _iconForSong(activeSong),
+                        imagePath: activeSong.coverImage,
                         isPlaying: _playback.isPlaying,
                         onTap: () {
                           Navigator.of(context).push(
